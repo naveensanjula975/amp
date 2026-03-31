@@ -1,0 +1,20 @@
+[Unit]
+Description=Gunicorn daemon for Automated Futures Trading Bot
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/automated-trading-bot
+ExecStart=/home/ubuntu/automated-trading-bot/venv/bin/gunicorn -k uvicorn.workers.UvicornWorker -c gunicorn_conf.py app.main:app
+
+# Restart policies
+Restart=always
+RestartSec=5
+
+# Environment variables
+Environment="PATH=/home/ubuntu/automated-trading-bot/venv/bin"
+EnvironmentFile=/home/ubuntu/automated-trading-bot/.env
+
+[Install]
+WantedBy=multi-user.target
